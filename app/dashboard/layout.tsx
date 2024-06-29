@@ -1,6 +1,6 @@
 import SideNav from "../ui/dashboard/sidenav";
-
-export const experimental_ppr = true;
+// Below line is commented to check weather build will work on vercel or not
+// export const experimental_ppr = true; 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
