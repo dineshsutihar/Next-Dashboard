@@ -1,12 +1,19 @@
-import React from 'react'
 
+import React from 'react'
 import { Metadata } from 'next';
+import CustomersTable from '@/app/ui/customers/table';
+import { fetchAllDetails } from '@/app/lib/data';
+
 export const metadata: Metadata = {
     title: 'Customer',
 };
-function page() {
+
+async function page() {
+    const customers = await fetchAllDetails();
     return (
-        <div>Customers Page</div>
+        <>
+            <CustomersTable customers={customers} />
+        </>
     )
 }
 

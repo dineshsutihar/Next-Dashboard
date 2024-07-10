@@ -158,7 +158,7 @@ export async function fetchInvoiceById(id: string) {
       // Convert amount from cents to dollars
       amount: invoice.amount / 100,
     }));
-    console.log(invoice);
+    // console.log(invoice);
     
     return invoice[0];
   } catch (error) {
@@ -215,5 +215,46 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+
+export async function fetchAllDetails() {
+  try {
+    const data = await sql<CustomerField>`
+SELECT 
+    c.id,
+    c.name,
+    c.email,
+    c.image_url,
+    COALESCE(paid.total_paid, 0) AS total_paid,
+    COALESCE(pending.total_pending, 0) AS total_pending,
+    COALESCE(total.total_invoices, 0) AS total_invoices
+FROM 
+    customers c
+LEFT JOIN 
+    (SELECT customer_id, SUM(amount) AS total_paid 
+     FROM invoices 
+     WHERE status = 'paid' 
+     GROUP BY customer_id) AS paid
+ON c.id = paid.customer_id
+LEFT JOIN 
+    (SELECT customer_id, SUM(amount) AS total_pending 
+     FROM invoices 
+     WHERE status = 'pending' 
+     GROUP BY customer_id) AS pending
+ON c.id = pending.customer_id
+LEFT JOIN 
+    (SELECT customer_id, SUM(amount) AS total_invoices 
+     FROM invoices 
+     GROUP BY customer_id) AS total
+ON c.id = total.customer_id;
+    `;
+
+    const customers = data.rows;
+    return customers;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all customers details.');
   }
 }

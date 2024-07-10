@@ -5,6 +5,9 @@ const nextConfig = {
     // experimental:{
     //     ppr:'incremental',
     // },
+    images: {
+        domains: ['media.licdn.com'],
+    },
 };
 
 export default nextConfig;

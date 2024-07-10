@@ -70,9 +70,9 @@ export type FormattedCustomersTable = {
   name: string;
   email: string;
   image_url: string;
-  total_invoices: number;
-  total_pending: string;
   total_paid: string;
+  total_pending: string;
+  total_invoices: number;
 };
 
 export type CustomerField = {
