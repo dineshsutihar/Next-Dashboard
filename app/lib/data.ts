@@ -252,6 +252,7 @@ ON c.id = total.customer_id;
     `;
 
     const customers = data.rows;
+    
     return customers;
   } catch (err) {
     console.error('Database Error:', err);
